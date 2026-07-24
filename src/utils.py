@@ -163,6 +163,7 @@ def nbd_loss(outputs, partialY,confidence):
 
     return average_loss + args.lamda * loss_noncon
 
+
 def supervised_contrastive_loss(fea, labels_list, tau=1.):
     n_view = len(fea)
     batch_size = fea[0].shape[0]
@@ -175,17 +176,13 @@ def supervised_contrastive_loss(fea, labels_list, tau=1.):
     sim = (sim / tau).exp()
     label_sim = all_labels.unsqueeze(1) == all_labels.unsqueeze(0)
     label_sim = label_sim.float()
-    sim = sim * label_sim
-    sim = sim - sim.diag().diag()
-    eps = 1e-20
-    sim = sim + eps
-    log_sim = torch.log(sim)
+    pos_sim = sim * label_sim
 
-    sim_sum1 = sum([sim[:, v * batch_size: (v + 1) * batch_size] for v in range(n_view)])
+    sim_sum1 = sum([pos_sim[:, v * batch_size: (v + 1) * batch_size] for v in range(n_view)])
     diag1 = torch.cat([sim_sum1[v * batch_size: (v + 1) * batch_size].diag() for v in range(n_view)])
     loss1 = -(diag1 / sim.sum(1)).log().mean()
 
-    sim_sum2 = sum([sim[v * batch_size: (v + 1) * batch_size] for v in range(n_view)])
+    sim_sum2 = sum([pos_sim[v * batch_size: (v + 1) * batch_size] for v in range(n_view)])
     diag2 = torch.cat([sim_sum2[:, v * batch_size: (v + 1) * batch_size].diag() for v in range(n_view)])
     loss2 = -(diag2 / sim.sum(1)).log().mean()
 
