@@ -14,3 +14,17 @@ CUDA_VISIBLE_DEVICES=1 python DiCA.py --train_batch_size 32 --eval_batch_size 12
 
 ## All the datasets
 https://pan.baidu.com/s/1nbZlGXFDKjxhZyC2qs0YIA?pwd=DiCA
+
+## Citation
+If you find our code useful, please cite our paper. 
+```
+@inproceedings{su2025dica,
+  title={Dica: Disambiguated contrastive alignment for cross-modal retrieval with partial labels},
+  author={Su, Chao and Zheng, Huiming and Peng, Dezhong and Wang, Xu},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={39},
+  number={19},
+  pages={20610--20618},
+  year={2025}
+}
+```
